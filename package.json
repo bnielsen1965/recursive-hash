@@ -1,0 +1,24 @@
+{
+  "name": "recursive-hash",
+  "version": "1.0.0",
+  "description": "Recursively walk a path and hash files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bnielsen1965/recursive-hash.git"
+  },
+  "keywords": [
+    "hash",
+    "file",
+    "files",
+    "directory",
+    "directories",
+    "path",
+    "recursive"
+  ],
+  "author": "Bryan Nielsen <bnielsen1965@gmail.com> (https://github.com/bnielsen1965)",
+  "license": "MIT"
+}
