@@ -44,7 +44,9 @@ Default settings:
 const Defaults = {
   path: './',
   hashCommand: 'md5sum',
-  processHash: async (path, name, hash) => console.log(`${hash} : ${name} : ${path}`)
+  processHash: async (path, name, hash) => console.log(`${hash} : ${name} : ${path}`),
+  continueOnError: true,
+  onError: null
 };
 ```
 
@@ -71,6 +73,36 @@ let processHash = async (path, name, hash) => {
   console.log(`Hash: ${hash}, Filename: ${name}, Path: ${path}`);
 }
 ```
+
+
+## continueOnError
+
+When an error occurs while performing the recursive search and hash the process
+will skip the file or directory where the error occurred and continue on. If the
+*continueOnError* setting is set to false then the process will stop if an error
+occurs.
+
+
+## onError
+
+An optional *onError* function can be provided in the settings to process any errors
+that occur during the recursive search and hash. The function should accept an
+error object for processing.
+
+Example search with an onError method:
+```javascript
+const RecursiveHash = require('recursive-hash');
+RecursiveHash.search({
+  path,
+  processHash,
+  continueOnError: true,
+  onError: error => console.log(`Error: ${error.message}`)
+});
+```
+
+The recursive search and hash will continue after processing any provided onError
+method.
+
 
 
 ## hashCommand

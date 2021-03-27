@@ -6,18 +6,36 @@ const Exec = require('child_process').exec;
 const Defaults = {
   path: './',
   hashCommand: 'md5sum',
-  processHash: async (path, name, hash) => console.log(`${hash} : ${name} : ${path}`)
+  processHash: async (path, name, hash) => console.log(`${hash} : ${name} : ${path}`),
+  continueOnError: true,
+  onError: null
 };
 
 class RecursiveHash {
   // recursively search for files and perform hash
   static async search (settings) {
     settings = RecursiveHash.normalizeSettings(settings);
-    let files = FS.readdirSync(settings.path);
+    let files;
+    try {
+      files = FS.readdirSync(settings.path);
+    }
+    catch (error) {
+      if (onError) onError(error);
+      if (!settings.continueOnError) throw error;
+    }
     for (let i = 0; i < files.length; i++) {
       let path = Path.join(settings.path, files[i]);
       if (files[i] === '.' || files[i] === '..') continue;
-      if (FS.lstatSync(path).isDirectory()) {
+      let lstat;
+      try {
+        lstat = FS.lstatSync(path);
+      }
+      catch (error) {
+        if (onError) onError(error);
+        if (settings.continueOnError) continue;
+        throw error;
+      }
+      if (lstat.isDirectory()) {
         await RecursiveHash.search(Object.assign({}, settings, { path }));
         continue;
       }
