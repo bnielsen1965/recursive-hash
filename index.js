@@ -20,7 +20,7 @@ class RecursiveHash {
       files = FS.readdirSync(settings.path);
     }
     catch (error) {
-      if (onError) onError(error);
+      if (settings.onError) settings.onError(error);
       if (!settings.continueOnError) throw error;
     }
     for (let i = 0; i < files.length; i++) {
@@ -31,7 +31,7 @@ class RecursiveHash {
         lstat = FS.lstatSync(path);
       }
       catch (error) {
-        if (onError) onError(error);
+        if (settings.onError) settings.onError(error);
         if (settings.continueOnError) continue;
         throw error;
       }
